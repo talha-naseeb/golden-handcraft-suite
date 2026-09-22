@@ -151,7 +151,7 @@ export function CatalogPage({ category }: { category: Category }) {
                 max={maxPrice}
                 step={250}
                 value={[priceCap]}
-                onValueChange={(v) => setPriceCap(v[0])}
+                onValueChange={(v) => setPriceCap(v[0] ?? maxPrice)}
               />
               <p className="mt-3 text-sm text-muted-foreground">Up to {formatPrice(priceCap)}</p>
             </div>

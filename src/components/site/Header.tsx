@@ -79,7 +79,7 @@ export function Header() {
                   <Link
                     key={item.label}
                     to={item.to}
-                    hash={item.hash}
+                    {...(item.hash ? { hash: item.hash } : {})}
                     onClick={() => setMobileOpen(false)}
                     className="border-b border-border/60 py-4 font-display text-2xl"
                   >
@@ -101,7 +101,7 @@ export function Header() {
               <Link
                 key={item.label}
                 to={item.to}
-                hash={item.hash}
+                {...(item.hash ? { hash: item.hash } : {})}
                 activeOptions={{ exact: item.to === "/" }}
                 className={cn(
                   "wire-underline text-[11px] tracking-[0.18em] text-foreground/75 uppercase transition-colors hover:text-primary",

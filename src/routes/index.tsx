@@ -209,7 +209,7 @@ function Home() {
                   <Link to="/engagement-rings" className="group block">
                     <div className="overflow-hidden bg-background">
                       <img
-                        src={COLLECTION_NOTES[collection].image}
+                        src={COLLECTION_NOTES[collection]!.image}
                         alt={`${collection} collection`}
                         loading="lazy"
                         width={1008}
@@ -221,7 +221,7 @@ function Home() {
                       {collection}
                     </h3>
                     <p className="mt-1 text-sm text-muted-foreground">
-                      {COLLECTION_NOTES[collection].note}
+                      {COLLECTION_NOTES[collection]!.note}
                     </p>
                   </Link>
                 </CarouselItem>

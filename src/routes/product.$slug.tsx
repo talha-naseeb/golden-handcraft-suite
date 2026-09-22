@@ -42,7 +42,7 @@ export const Route = createFileRoute("/product/$slug")({
 function ProductDetail() {
   const { product } = Route.useLoaderData();
   const { addToCart, toggleWishlist, inWishlist, hydrated, setBookingOpen } = useShop();
-  const [metal, setMetal] = useState<Metal>(product.metals[0]);
+  const [metal, setMetal] = useState<Metal>(product.metals[0]!);
   const [size, setSize] = useState(product.category === "fine-jewelry" ? "" : "6.5");
   const [active, setActive] = useState(0);
   const saved = hydrated && inWishlist(product.slug);
@@ -175,11 +175,11 @@ function ProductDetail() {
             <Button
               className="flex-1 rounded-none py-6 tracking-[0.2em] uppercase"
               onClick={() =>
-                addToCart({
+addToCart({
                   slug: product.slug,
                   metal,
-                  size: needsSize ? size : undefined,
                   quantity: 1,
+                  ...(needsSize ? { size } : {}),
                 })
               }
             >

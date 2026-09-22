@@ -75,8 +75,9 @@ export function ShopProvider({ children }: { children: ReactNode }) {
         (l) => l.slug === line.slug && l.metal === line.metal && l.size === line.size,
       );
       if (idx >= 0) {
+        const existing = prev[idx]!;
         const next = [...prev];
-        next[idx] = { ...next[idx], quantity: next[idx].quantity + line.quantity };
+        next[idx] = { ...existing, quantity: existing.quantity + line.quantity };
         return next;
       }
       return [...prev, line];
