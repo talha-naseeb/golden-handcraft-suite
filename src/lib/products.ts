@@ -375,7 +375,7 @@ export const products: Product[] = seeds.map((seed, i) => {
     image: gallery[0]!,
     hoverImage: gallery[1]!,
     gallery,
-    badge: seed.badge,
+    ...(seed.badge ? { badge: seed.badge } : {}),
     newest: seeds.length - i,
     description: seed.description,
     craftsmanship:
