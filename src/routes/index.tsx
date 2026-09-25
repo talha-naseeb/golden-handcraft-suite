@@ -10,6 +10,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { COLLECTIONS, DIAMOND_SHAPES, products } from "@/lib/products";
+import { diamondImage } from "@/lib/diamond-images";
 import { useShop } from "@/lib/shop-store";
 import heroImg from "@/assets/hero-ring.jpg";
 import atelierImg from "@/assets/atelier.jpg";
@@ -247,8 +248,15 @@ function Home() {
               to="/engagement-rings"
               className="group flex flex-col items-center gap-3"
             >
-              <span className="grid size-16 place-items-center border border-border transition-colors group-hover:border-primary">
-                <ShapeGlyph shape={shape} />
+              <span className="block size-20 overflow-hidden border border-border bg-linen transition-colors group-hover:border-primary">
+                <img
+                  src={diamondImage(shape)}
+                  alt={`${shape} cut diamond`}
+                  loading="lazy"
+                  width={816}
+                  height={816}
+                  className="size-full object-cover transition-transform duration-500 group-hover:scale-110"
+                />
               </span>
               <span className="text-[10px] tracking-[0.18em] text-muted-foreground uppercase group-hover:text-primary">
                 {shape}
