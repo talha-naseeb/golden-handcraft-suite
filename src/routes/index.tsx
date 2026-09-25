@@ -245,7 +245,8 @@ function Home() {
           {DIAMOND_SHAPES.map((shape) => (
             <Link
               key={shape}
-              to="/engagement-rings"
+              to="/ring-builder"
+              search={{ shape }}
               className="group flex flex-col items-center gap-3"
             >
               <span className="block size-20 overflow-hidden border border-border bg-linen transition-colors group-hover:border-primary">
@@ -265,7 +266,7 @@ function Home() {
           ))}
         </div>
         <Button asChild className="mt-14 rounded-none px-10 py-6 tracking-[0.2em] uppercase">
-          <Link to="/engagement-rings">Start the Ring Builder</Link>
+          <Link to="/ring-builder">Start the Ring Builder</Link>
         </Button>
       </section>
 
