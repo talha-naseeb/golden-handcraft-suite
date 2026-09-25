@@ -7,13 +7,14 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { getProduct, type Metal, type Product } from "./products";
+import { getProduct, products, type Metal, type Product } from "./products";
 
 export type CartLine = {
   slug: string;
   metal: Metal;
   size?: string;
   quantity: number;
+  custom?: { name: string; price: number; image: string; summary: string };
 };
 
 type ShopState = {
@@ -104,7 +105,24 @@ export function ShopProvider({ children }: { children: ReactNode }) {
   const detailedCart = useMemo(
     () =>
       cart
-        .map((line) => ({ line, product: getProduct(line.slug) }))
+        .map((line) => {
+          if (line.custom) {
+            const base = products[0]!;
+            const c = line.custom;
+            const product: Product = {
+              ...base,
+              slug: line.slug,
+              name: c.name,
+              price: c.price,
+              image: c.image,
+              hoverImage: c.image,
+              gallery: [c.image],
+              subcategory: c.summary,
+            };
+            return { line, product };
+          }
+          return { line, product: getProduct(line.slug) };
+        })
         .filter((entry): entry is { line: CartLine; product: Product } => Boolean(entry.product)),
     [cart],
   );

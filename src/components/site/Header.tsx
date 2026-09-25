@@ -11,7 +11,7 @@ const NAV: { label: string; to: string; hash?: string }[] = [
   { label: "Fine Jewelry", to: "/fine-jewelry" },
   { label: "Men's", to: "/mens" },
   { label: "Collections", to: "/", hash: "collections" },
-  { label: "Ring Builder", to: "/", hash: "builder" },
+  { label: "Ring Builder", to: "/ring-builder" },
   { label: "Our Story", to: "/", hash: "story" },
 ];
 

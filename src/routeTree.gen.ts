@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as EngagementRingsRouteImport } from './routes/engagement-rings'
 import { Route as FineJewelryRouteImport } from './routes/fine-jewelry'
 import { Route as MensRouteImport } from './routes/mens'
+import { Route as RingBuilderRouteImport } from './routes/ring-builder'
 import { Route as WeddingBandsRouteImport } from './routes/wedding-bands'
 import { Route as WishlistRouteImport } from './routes/wishlist'
 import { Route as ProductSlugRouteImport } from './routes/product.$slug'
@@ -37,6 +38,11 @@ const MensRoute = MensRouteImport.update({
   path: '/mens',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RingBuilderRoute = RingBuilderRouteImport.update({
+  id: '/ring-builder',
+  path: '/ring-builder',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const WeddingBandsRoute = WeddingBandsRouteImport.update({
   id: '/wedding-bands',
   path: '/wedding-bands',
@@ -58,6 +64,7 @@ export interface FileRoutesByFullPath {
   '/engagement-rings': typeof EngagementRingsRoute
   '/fine-jewelry': typeof FineJewelryRoute
   '/mens': typeof MensRoute
+  '/ring-builder': typeof RingBuilderRoute
   '/wedding-bands': typeof WeddingBandsRoute
   '/wishlist': typeof WishlistRoute
   '/product/$slug': typeof ProductSlugRoute
@@ -67,6 +74,7 @@ export interface FileRoutesByTo {
   '/engagement-rings': typeof EngagementRingsRoute
   '/fine-jewelry': typeof FineJewelryRoute
   '/mens': typeof MensRoute
+  '/ring-builder': typeof RingBuilderRoute
   '/wedding-bands': typeof WeddingBandsRoute
   '/wishlist': typeof WishlistRoute
   '/product/$slug': typeof ProductSlugRoute
@@ -77,6 +85,7 @@ export interface FileRoutesById {
   '/engagement-rings': typeof EngagementRingsRoute
   '/fine-jewelry': typeof FineJewelryRoute
   '/mens': typeof MensRoute
+  '/ring-builder': typeof RingBuilderRoute
   '/wedding-bands': typeof WeddingBandsRoute
   '/wishlist': typeof WishlistRoute
   '/product/$slug': typeof ProductSlugRoute
@@ -88,6 +97,7 @@ export interface FileRouteTypes {
     | '/engagement-rings'
     | '/fine-jewelry'
     | '/mens'
+    | '/ring-builder'
     | '/wedding-bands'
     | '/wishlist'
     | '/product/$slug'
@@ -97,6 +107,7 @@ export interface FileRouteTypes {
     | '/engagement-rings'
     | '/fine-jewelry'
     | '/mens'
+    | '/ring-builder'
     | '/wedding-bands'
     | '/wishlist'
     | '/product/$slug'
@@ -106,6 +117,7 @@ export interface FileRouteTypes {
     | '/engagement-rings'
     | '/fine-jewelry'
     | '/mens'
+    | '/ring-builder'
     | '/wedding-bands'
     | '/wishlist'
     | '/product/$slug'
@@ -116,6 +128,7 @@ export interface RootRouteChildren {
   EngagementRingsRoute: typeof EngagementRingsRoute
   FineJewelryRoute: typeof FineJewelryRoute
   MensRoute: typeof MensRoute
+  RingBuilderRoute: typeof RingBuilderRoute
   WeddingBandsRoute: typeof WeddingBandsRoute
   WishlistRoute: typeof WishlistRoute
   ProductSlugRoute: typeof ProductSlugRoute
@@ -151,6 +164,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MensRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ring-builder': {
+      id: '/ring-builder'
+      path: '/ring-builder'
+      fullPath: '/ring-builder'
+      preLoaderRoute: typeof RingBuilderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/wedding-bands': {
       id: '/wedding-bands'
       path: '/wedding-bands'
@@ -180,6 +200,7 @@ const rootRouteChildren: RootRouteChildren = {
   EngagementRingsRoute: EngagementRingsRoute,
   FineJewelryRoute: FineJewelryRoute,
   MensRoute: MensRoute,
+  RingBuilderRoute: RingBuilderRoute,
   WeddingBandsRoute: WeddingBandsRoute,
   WishlistRoute: WishlistRoute,
   ProductSlugRoute: ProductSlugRoute,
