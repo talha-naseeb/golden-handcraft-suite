@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { Minus, Plus, Truck, X } from "lucide-react";
-import { toast } from "sonner";
+import { BagLineInfo } from "./BagLineInfo";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { formatPrice } from "@/lib/products";
@@ -39,31 +39,17 @@ export function CartDrawer() {
             <ul className="space-y-6">
               {detailedCart.map(({ line, product }, index) => (
                 <li key={`${line.slug}-${line.metal}-${line.size ?? "os"}`} className="flex gap-4">
-                  <Link
-                    to="/product/$slug"
-                    params={{ slug: product.slug }}
-                    onClick={() => setCartOpen(false)}
-                    className="shrink-0"
-                  >
-                    <img
-                      src={product.image}
-                      alt={product.name}
-                      loading="lazy"
-                      width={1008}
-                      height={1008}
-                      className="size-24 bg-linen object-cover"
-                    />
-                  </Link>
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    loading="lazy"
+                    width={1008}
+                    height={1008}
+                    className="size-24 shrink-0 bg-linen object-cover"
+                  />
                   <div className="min-w-0 flex-1">
                     <div className="flex items-start justify-between gap-2">
-                      <Link
-                        to="/product/$slug"
-                        params={{ slug: product.slug }}
-                        onClick={() => setCartOpen(false)}
-                        className="font-display text-lg leading-tight hover:text-primary"
-                      >
-                        {product.name}
-                      </Link>
+                      <BagLineInfo line={line} product={product} onNavigate={() => setCartOpen(false)} />
                       <button
                         type="button"
                         onClick={() => removeLine(index)}
@@ -73,10 +59,6 @@ export function CartDrawer() {
                         <X className="size-4" />
                       </button>
                     </div>
-                    <p className="mt-1 text-xs tracking-[0.14em] text-muted-foreground uppercase">
-                      {line.metal}
-                      {line.size ? ` · Size ${line.size}` : ""}
-                    </p>
                     <div className="mt-3 flex items-center justify-between">
                       <div className="flex items-center border border-border">
                         <button
@@ -119,11 +101,13 @@ export function CartDrawer() {
             Duties and taxes calculated at checkout. 30-day returns.
           </p>
           <Button
+            asChild={detailedCart.length > 0}
             className="mt-5 w-full rounded-none py-6 tracking-[0.2em] uppercase"
             disabled={detailedCart.length === 0}
-            onClick={() => toast.success("Secure checkout opens in Phase 2.")}
           >
-            Checkout
+            <Link to="/checkout" onClick={() => setCartOpen(false)}>
+              Checkout
+            </Link>
           </Button>
         </div>
       </SheetContent>

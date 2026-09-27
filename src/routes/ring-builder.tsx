@@ -1,5 +1,18 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { toast } from "sonner";
+import { Link2, Mail, Save, Sparkles, Trash2, UserRound } from "lucide-react";
+import { streamImage } from "@/lib/stream-image";
+import {
+  decodeConfig,
+  describeConfig,
+  encodeConfig,
+  loadSavedDesigns,
+  shrinkImage,
+  storeSavedDesigns,
+  type RingConfig,
+  type SavedDesign,
+} from "@/lib/ring-config";
 import { Check, ChevronLeft, ChevronRight } from "lucide-react";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
@@ -8,7 +21,7 @@ import { diamondImage } from "@/lib/diamond-images";
 import { useShop } from "@/lib/shop-store";
 import { cn } from "@/lib/utils";
 
-const searchSchema = z.object({ shape: z.string().optional() });
+const searchSchema = z.object({ shape: z.string().optional(), d: z.string().optional() });
 
 export const Route = createFileRoute("/ring-builder")({
   validateSearch: (s) => searchSchema.parse(s),
@@ -66,17 +79,88 @@ const CUTS = [
 const SIZES = ["4", "4.5", "5", "5.5", "6", "6.5", "7", "7.5", "8", "8.5", "9"];
 
 function RingBuilder() {
-  const { shape: initialShape } = Route.useSearch();
+  const { shape: initialShape, d } = Route.useSearch();
   const { addToCart, setBookingOpen } = useShop();
+  const shared = decodeConfig(d);
   const startShape = DIAMOND_SHAPES.find((s) => s === initialShape);
-  const [step, setStep] = useState(startShape ? 1 : 0);
-  const [shape, setShape] = useState<string>(startShape ?? "Round");
-  const [metal, setMetal] = useState<Metal>("Platinum");
-  const [carat, setCarat] = useState(1);
-  const [color, setColor] = useState("G");
-  const [clarity, setClarity] = useState("VS2");
-  const [cut, setCut] = useState("Excellent");
-  const [size, setSize] = useState("6");
+  const [step, setStep] = useState(shared ? 4 : startShape ? 1 : 0);
+  const [shape, setShape] = useState<string>(shared?.shape ?? startShape ?? "Round");
+  const [metal, setMetal] = useState<Metal>((shared?.metal as Metal) ?? "Platinum");
+  const [carat, setCarat] = useState(shared?.carat ?? 1);
+  const [color, setColor] = useState<string>(shared?.color ?? "G");
+  const [clarity, setClarity] = useState<string>(shared?.clarity ?? "VS2");
+  const [cut, setCut] = useState<string>(shared?.cut ?? "Excellent");
+  const [size, setSize] = useState(shared?.size ?? "6");
+  const [aiImage, setAiImage] = useState<{ url: string; final: boolean; key: string } | null>(null);
+  const [generating, setGenerating] = useState(false);
+  const [aiError, setAiError] = useState<string | null>(null);
+  const [saved, setSaved] = useState<SavedDesign[]>([]);
+  useEffect(() => setSaved(loadSavedDesigns()), []);
+
+  const config = { shape, metal, carat, color, clarity, cut, size } as RingConfig;
+  const designKey = `${shape}|${metal}|${carat}|${color}|${clarity}|${cut}`;
+  const preview = aiImage && aiImage.key === designKey ? aiImage : null;
+
+  const generate = async () => {
+    setGenerating(true);
+    setAiError(null);
+    try {
+      await streamImage("/api/ring-preview", { config }, (url, final) =>
+        setAiImage({ url, final, key: designKey }),
+      );
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : "";
+      setAiError(
+        msg.includes("402")
+          ? "The preview service is out of credits right now. Please try later."
+          : msg.includes("429")
+            ? "Too many previews requested. Please wait a moment and try again."
+            : "We couldn't create a preview. Please try again.",
+      );
+    } finally {
+      setGenerating(false);
+    }
+  };
+
+  const shareUrl = () =>
+    `${window.location.origin}/ring-builder?d=${encodeURIComponent(encodeConfig(config))}`;
+
+  const saveDesign = () => {
+    const entry: SavedDesign = { id: String(Date.now()), config, price, savedAt: Date.now() };
+    const next = [entry, ...saved.filter((s) => encodeConfig(s.config) !== encodeConfig(config))].slice(0, 12);
+    setSaved(next);
+    storeSavedDesigns(next);
+    toast.success("Design saved");
+  };
+  const removeSaved = (id: string) => {
+    const next = saved.filter((s) => s.id !== id);
+    setSaved(next);
+    storeSavedDesigns(next);
+  };
+  const loadDesign = (c: RingConfig) => {
+    setShape(c.shape);
+    setMetal(c.metal as Metal);
+    setCarat(c.carat);
+    setColor(c.color);
+    setClarity(c.clarity);
+    setCut(c.cut);
+    setSize(c.size);
+    setStep(4);
+  };
+  const copyLink = async () => {
+    await navigator.clipboard.writeText(shareUrl());
+    toast.success("Share link copied");
+  };
+  const mailBody = () =>
+    encodeURIComponent(
+      `Here's the DANHOV ring I designed:\n\n${describeConfig(config)}\nPrice: ${formatPrice(price)}\n\nView it: ${shareUrl()}`,
+    );
+  const emailPartner = () => {
+    window.location.href = `mailto:?subject=${encodeURIComponent("What do you think of this ring?")}&body=${mailBody()}`;
+  };
+  const emailAdvisor = () => {
+    window.location.href = `mailto:care@danhov.com?subject=${encodeURIComponent("Custom ring design review")}&body=${mailBody()}`;
+  };
 
   const price = useMemo(() => {
     const c = COLORS.find((x) => x.grade === color)!.mult;
@@ -89,7 +173,8 @@ function RingBuilder() {
 
   const summary = `${carat.toFixed(2)}ct ${shape} · ${color}/${clarity} · ${cut} cut · ${metal}`;
 
-  const order = () => {
+  const order = async () => {
+    const image = preview?.final ? await shrinkImage(preview.url) : diamondImage(shape);
     addToCart({
       slug: `custom-${shape}-${metal}-${carat}-${color}-${clarity}-${cut}`
         .toLowerCase()
@@ -100,8 +185,9 @@ function RingBuilder() {
       custom: {
         name: `Custom ${shape} Engagement Ring`,
         price,
-        image: diamondImage(shape),
+        image,
         summary,
+        config,
       },
     });
   };
@@ -253,7 +339,33 @@ function RingBuilder() {
           {step === 4 && (
             <StepBlock title="Your final look">
               <div className="grid gap-8 md:grid-cols-2">
-                <Preview shape={shape} metal={metal} large />
+                <div>
+                  {preview ? (
+                    <img
+                      src={preview.url}
+                      alt={`AI preview: ${summary}`}
+                      className={cn(
+                        "aspect-square w-full border border-border object-cover transition-[filter] duration-700",
+                        preview.final ? "blur-0" : "blur-2xl",
+                      )}
+                    />
+                  ) : (
+                    <Preview shape={shape} metal={metal} large />
+                  )}
+                  <Button
+                    variant="outline"
+                    onClick={generate}
+                    disabled={generating}
+                    className="mt-3 w-full rounded-none tracking-[0.18em] uppercase"
+                  >
+                    <Sparkles className="size-4" />
+                    {generating ? "Creating preview…" : preview ? "Regenerate preview" : "See my finished ring"}
+                  </Button>
+                  {aiError && <p className="mt-2 text-xs text-destructive">{aiError}</p>}
+                  <p className="mt-2 text-[11px] text-muted-foreground">
+                    AI-generated illustration of your design. Your finished ring is handcrafted and may vary slightly.
+                  </p>
+                </div>
                 <div>
                   <dl className="divide-y divide-border border-y border-border text-sm">
                     {[
@@ -290,6 +402,23 @@ function RingBuilder() {
                       Book a private viewing
                     </Button>
                   </div>
+                  <div className="mt-6 border-t border-border pt-5">
+                    <p className="eyebrow mb-3 text-muted-foreground">Save & share before ordering</p>
+                    <div className="grid grid-cols-2 gap-2">
+                      <Button variant="ghost" size="sm" onClick={saveDesign} className="justify-start rounded-none">
+                        <Save className="size-4" /> Save design
+                      </Button>
+                      <Button variant="ghost" size="sm" onClick={copyLink} className="justify-start rounded-none">
+                        <Link2 className="size-4" /> Copy link
+                      </Button>
+                      <Button variant="ghost" size="sm" onClick={emailPartner} className="justify-start rounded-none">
+                        <Mail className="size-4" /> Send to partner
+                      </Button>
+                      <Button variant="ghost" size="sm" onClick={emailAdvisor} className="justify-start rounded-none">
+                        <UserRound className="size-4" /> Ask an advisor
+                      </Button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </StepBlock>
@@ -323,6 +452,27 @@ function RingBuilder() {
           </div>
           <p className="mt-4 text-sm">{summary}</p>
           <p className="mt-3 font-display text-2xl">{formatPrice(price)}</p>
+          {saved.length > 0 && (
+            <div className="mt-6 border-t border-border pt-4">
+              <p className="eyebrow mb-3 text-muted-foreground">Saved designs</p>
+              <ul className="space-y-2">
+                {saved.map((s) => (
+                  <li key={s.id} className="flex items-center gap-2 text-xs">
+                    <button
+                      type="button"
+                      onClick={() => loadDesign(s.config)}
+                      className="flex-1 text-left hover:text-primary"
+                    >
+                      {describeConfig(s.config)} — {formatPrice(s.price)}
+                    </button>
+                    <button type="button" aria-label="Remove saved design" onClick={() => removeSaved(s.id)}>
+                      <Trash2 className="size-3.5 text-muted-foreground hover:text-primary" />
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </aside>
       </div>
     </div>

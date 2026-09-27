@@ -7,6 +7,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import type { RingConfig } from "./ring-config";
 import { getProduct, products, type Metal, type Product } from "./products";
 
 export type CartLine = {
@@ -14,7 +15,7 @@ export type CartLine = {
   metal: Metal;
   size?: string;
   quantity: number;
-  custom?: { name: string; price: number; image: string; summary: string };
+  custom?: { name: string; price: number; image: string; summary: string; config?: RingConfig };
 };
 
 type ShopState = {
@@ -28,6 +29,7 @@ type ShopState = {
   addToCart: (line: CartLine) => void;
   removeLine: (index: number) => void;
   updateQuantity: (index: number, quantity: number) => void;
+  clearCart: () => void;
   toggleWishlist: (slug: string) => void;
   inWishlist: (slug: string) => boolean;
   cartCount: number;
@@ -138,6 +140,7 @@ export function ShopProvider({ children }: { children: ReactNode }) {
     addToCart,
     removeLine,
     updateQuantity,
+    clearCart: () => setCart([]),
     toggleWishlist,
     inWishlist: (slug) => wishlist.includes(slug),
     cartCount: cart.reduce((n, l) => n + l.quantity, 0),
