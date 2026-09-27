@@ -16,6 +16,7 @@ import { Route as MensRouteImport } from './routes/mens'
 import { Route as RingBuilderRouteImport } from './routes/ring-builder'
 import { Route as WeddingBandsRouteImport } from './routes/wedding-bands'
 import { Route as WishlistRouteImport } from './routes/wishlist'
+import { Route as ApiRingPreviewRouteImport } from './routes/api/ring-preview'
 import { Route as ProductSlugRouteImport } from './routes/product.$slug'
 
 const IndexRoute = IndexRouteImport.update({
@@ -53,6 +54,11 @@ const WishlistRoute = WishlistRouteImport.update({
   path: '/wishlist',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiRingPreviewRoute = ApiRingPreviewRouteImport.update({
+  id: '/api/ring-preview',
+  path: '/api/ring-preview',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProductSlugRoute = ProductSlugRouteImport.update({
   id: '/product/$slug',
   path: '/product/$slug',
@@ -67,6 +73,7 @@ export interface FileRoutesByFullPath {
   '/ring-builder': typeof RingBuilderRoute
   '/wedding-bands': typeof WeddingBandsRoute
   '/wishlist': typeof WishlistRoute
+  '/api/ring-preview': typeof ApiRingPreviewRoute
   '/product/$slug': typeof ProductSlugRoute
 }
 export interface FileRoutesByTo {
@@ -77,6 +84,7 @@ export interface FileRoutesByTo {
   '/ring-builder': typeof RingBuilderRoute
   '/wedding-bands': typeof WeddingBandsRoute
   '/wishlist': typeof WishlistRoute
+  '/api/ring-preview': typeof ApiRingPreviewRoute
   '/product/$slug': typeof ProductSlugRoute
 }
 export interface FileRoutesById {
@@ -88,6 +96,7 @@ export interface FileRoutesById {
   '/ring-builder': typeof RingBuilderRoute
   '/wedding-bands': typeof WeddingBandsRoute
   '/wishlist': typeof WishlistRoute
+  '/api/ring-preview': typeof ApiRingPreviewRoute
   '/product/$slug': typeof ProductSlugRoute
 }
 export interface FileRouteTypes {
@@ -100,6 +109,7 @@ export interface FileRouteTypes {
     | '/ring-builder'
     | '/wedding-bands'
     | '/wishlist'
+    | '/api/ring-preview'
     | '/product/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -110,6 +120,7 @@ export interface FileRouteTypes {
     | '/ring-builder'
     | '/wedding-bands'
     | '/wishlist'
+    | '/api/ring-preview'
     | '/product/$slug'
   id:
     | '__root__'
@@ -120,6 +131,7 @@ export interface FileRouteTypes {
     | '/ring-builder'
     | '/wedding-bands'
     | '/wishlist'
+    | '/api/ring-preview'
     | '/product/$slug'
   fileRoutesById: FileRoutesById
 }
@@ -131,6 +143,7 @@ export interface RootRouteChildren {
   RingBuilderRoute: typeof RingBuilderRoute
   WeddingBandsRoute: typeof WeddingBandsRoute
   WishlistRoute: typeof WishlistRoute
+  ApiRingPreviewRoute: typeof ApiRingPreviewRoute
   ProductSlugRoute: typeof ProductSlugRoute
 }
 
@@ -185,6 +198,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WishlistRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/ring-preview': {
+      id: '/api/ring-preview'
+      path: '/api/ring-preview'
+      fullPath: '/api/ring-preview'
+      preLoaderRoute: typeof ApiRingPreviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/product/$slug': {
       id: '/product/$slug'
       path: '/product/$slug'
@@ -203,6 +223,7 @@ const rootRouteChildren: RootRouteChildren = {
   RingBuilderRoute: RingBuilderRoute,
   WeddingBandsRoute: WeddingBandsRoute,
   WishlistRoute: WishlistRoute,
+  ApiRingPreviewRoute: ApiRingPreviewRoute,
   ProductSlugRoute: ProductSlugRoute,
 }
 export const routeTree = rootRouteImport
