@@ -87,9 +87,9 @@ function RingBuilder() {
   const [shape, setShape] = useState<string>(shared?.shape ?? startShape ?? "Round");
   const [metal, setMetal] = useState<Metal>((shared?.metal as Metal) ?? "Platinum");
   const [carat, setCarat] = useState(shared?.carat ?? 1);
-  const [color, setColor] = useState(shared?.color ?? "G");
-  const [clarity, setClarity] = useState(shared?.clarity ?? "VS2");
-  const [cut, setCut] = useState(shared?.cut ?? "Excellent");
+  const [color, setColor] = useState<string>(shared?.color ?? "G");
+  const [clarity, setClarity] = useState<string>(shared?.clarity ?? "VS2");
+  const [cut, setCut] = useState<string>(shared?.cut ?? "Excellent");
   const [size, setSize] = useState(shared?.size ?? "6");
   const [aiImage, setAiImage] = useState<{ url: string; final: boolean; key: string } | null>(null);
   const [generating, setGenerating] = useState(false);
