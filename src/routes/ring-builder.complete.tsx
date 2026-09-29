@@ -138,7 +138,7 @@ function CompleteStep() {
               {setting && needSetting && (
                 <div className="flex aspect-square flex-col items-center justify-center bg-linen p-4">
                   <p className="eyebrow text-muted-foreground">Inside band</p>
-                  <div className="mt-4 flex h-14 w-full items-center justify-center rounded-full border-4 border-[color:var(--color-champagne,theme(colors.amber.300))] bg-background px-4 shadow-inner">
+                  <div className="mt-4 flex h-14 w-full items-center justify-center rounded-full border-4 border-border bg-background px-4 shadow-inner">
                     <span className="truncate font-display text-lg italic">{engraving || "Your words here"}</span>
                   </div>
                 </div>

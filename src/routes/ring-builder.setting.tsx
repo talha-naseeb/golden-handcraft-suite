@@ -119,7 +119,7 @@ function SettingCard({
   );
 }
 
-export function metalSwatch(m: string) {
+function metalSwatch(m: string) {
   if (m.includes("Yellow")) return "linear-gradient(135deg,#e9cf8e,#b8913f)";
   if (m.includes("Rose")) return "linear-gradient(135deg,#efc1ae,#b97a66)";
   return "linear-gradient(135deg,#f1f1f1,#a9a9ad)";

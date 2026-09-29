@@ -21,6 +21,9 @@ import { Route as ApiConceptRenderRouteImport } from './routes/api/concept-rende
 import { Route as ApiRingPreviewRouteImport } from './routes/api/ring-preview'
 import { Route as ProductSlugRouteImport } from './routes/product.$slug'
 import { Route as RingBuilderIndexRouteImport } from './routes/ring-builder.index'
+import { Route as RingBuilderCompleteRouteImport } from './routes/ring-builder.complete'
+import { Route as RingBuilderDiamondRouteImport } from './routes/ring-builder.diamond'
+import { Route as RingBuilderSettingRouteImport } from './routes/ring-builder.setting'
 import { Route as RingBuilderShapeRouteImport } from './routes/ring-builder.shape'
 
 const IndexRoute = IndexRouteImport.update({
@@ -83,6 +86,21 @@ const RingBuilderIndexRoute = RingBuilderIndexRouteImport.update({
   path: '/',
   getParentRoute: () => RingBuilderRoute,
 } as any)
+const RingBuilderCompleteRoute = RingBuilderCompleteRouteImport.update({
+  id: '/complete',
+  path: '/complete',
+  getParentRoute: () => RingBuilderRoute,
+} as any)
+const RingBuilderDiamondRoute = RingBuilderDiamondRouteImport.update({
+  id: '/diamond',
+  path: '/diamond',
+  getParentRoute: () => RingBuilderRoute,
+} as any)
+const RingBuilderSettingRoute = RingBuilderSettingRouteImport.update({
+  id: '/setting',
+  path: '/setting',
+  getParentRoute: () => RingBuilderRoute,
+} as any)
 const RingBuilderShapeRoute = RingBuilderShapeRouteImport.update({
   id: '/shape',
   path: '/shape',
@@ -101,6 +119,9 @@ export interface FileRoutesByFullPath {
   '/api/concept-render': typeof ApiConceptRenderRoute
   '/api/ring-preview': typeof ApiRingPreviewRoute
   '/product/$slug': typeof ProductSlugRoute
+  '/ring-builder/complete': typeof RingBuilderCompleteRoute
+  '/ring-builder/diamond': typeof RingBuilderDiamondRoute
+  '/ring-builder/setting': typeof RingBuilderSettingRoute
   '/ring-builder/shape': typeof RingBuilderShapeRoute
   '/ring-builder/': typeof RingBuilderIndexRoute
 }
@@ -115,6 +136,9 @@ export interface FileRoutesByTo {
   '/api/concept-render': typeof ApiConceptRenderRoute
   '/api/ring-preview': typeof ApiRingPreviewRoute
   '/product/$slug': typeof ProductSlugRoute
+  '/ring-builder/complete': typeof RingBuilderCompleteRoute
+  '/ring-builder/diamond': typeof RingBuilderDiamondRoute
+  '/ring-builder/setting': typeof RingBuilderSettingRoute
   '/ring-builder/shape': typeof RingBuilderShapeRoute
   '/ring-builder': typeof RingBuilderIndexRoute
 }
@@ -131,6 +155,9 @@ export interface FileRoutesById {
   '/api/concept-render': typeof ApiConceptRenderRoute
   '/api/ring-preview': typeof ApiRingPreviewRoute
   '/product/$slug': typeof ProductSlugRoute
+  '/ring-builder/complete': typeof RingBuilderCompleteRoute
+  '/ring-builder/diamond': typeof RingBuilderDiamondRoute
+  '/ring-builder/setting': typeof RingBuilderSettingRoute
   '/ring-builder/shape': typeof RingBuilderShapeRoute
   '/ring-builder/': typeof RingBuilderIndexRoute
 }
@@ -148,6 +175,9 @@ export interface FileRouteTypes {
     | '/api/concept-render'
     | '/api/ring-preview'
     | '/product/$slug'
+    | '/ring-builder/complete'
+    | '/ring-builder/diamond'
+    | '/ring-builder/setting'
     | '/ring-builder/shape'
     | '/ring-builder/'
   fileRoutesByTo: FileRoutesByTo
@@ -162,6 +192,9 @@ export interface FileRouteTypes {
     | '/api/concept-render'
     | '/api/ring-preview'
     | '/product/$slug'
+    | '/ring-builder/complete'
+    | '/ring-builder/diamond'
+    | '/ring-builder/setting'
     | '/ring-builder/shape'
     | '/ring-builder'
   id:
@@ -177,6 +210,9 @@ export interface FileRouteTypes {
     | '/api/concept-render'
     | '/api/ring-preview'
     | '/product/$slug'
+    | '/ring-builder/complete'
+    | '/ring-builder/diamond'
+    | '/ring-builder/setting'
     | '/ring-builder/shape'
     | '/ring-builder/'
   fileRoutesById: FileRoutesById
@@ -281,6 +317,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RingBuilderIndexRouteImport
       parentRoute: typeof RingBuilderRoute
     }
+    '/ring-builder/complete': {
+      id: '/ring-builder/complete'
+      path: '/complete'
+      fullPath: '/ring-builder/complete'
+      preLoaderRoute: typeof RingBuilderCompleteRouteImport
+      parentRoute: typeof RingBuilderRoute
+    }
+    '/ring-builder/diamond': {
+      id: '/ring-builder/diamond'
+      path: '/diamond'
+      fullPath: '/ring-builder/diamond'
+      preLoaderRoute: typeof RingBuilderDiamondRouteImport
+      parentRoute: typeof RingBuilderRoute
+    }
+    '/ring-builder/setting': {
+      id: '/ring-builder/setting'
+      path: '/setting'
+      fullPath: '/ring-builder/setting'
+      preLoaderRoute: typeof RingBuilderSettingRouteImport
+      parentRoute: typeof RingBuilderRoute
+    }
     '/ring-builder/shape': {
       id: '/ring-builder/shape'
       path: '/shape'
@@ -292,11 +349,17 @@ declare module '@tanstack/react-router' {
 }
 
 interface RingBuilderRouteChildren {
+  RingBuilderCompleteRoute: typeof RingBuilderCompleteRoute
+  RingBuilderDiamondRoute: typeof RingBuilderDiamondRoute
+  RingBuilderSettingRoute: typeof RingBuilderSettingRoute
   RingBuilderShapeRoute: typeof RingBuilderShapeRoute
   RingBuilderIndexRoute: typeof RingBuilderIndexRoute
 }
 
 const RingBuilderRouteChildren: RingBuilderRouteChildren = {
+  RingBuilderCompleteRoute: RingBuilderCompleteRoute,
+  RingBuilderDiamondRoute: RingBuilderDiamondRoute,
+  RingBuilderSettingRoute: RingBuilderSettingRoute,
   RingBuilderShapeRoute: RingBuilderShapeRoute,
   RingBuilderIndexRoute: RingBuilderIndexRoute,
 }
