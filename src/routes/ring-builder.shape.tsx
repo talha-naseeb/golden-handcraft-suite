@@ -23,7 +23,7 @@ import { cn } from "@/lib/utils";
 
 const searchSchema = z.object({ shape: z.string().optional(), d: z.string().optional() });
 
-export const Route = createFileRoute("/ring-builder")({
+export const Route = createFileRoute("/ring-builder/shape")({
   validateSearch: (s) => searchSchema.parse(s),
   head: () => ({
     meta: [

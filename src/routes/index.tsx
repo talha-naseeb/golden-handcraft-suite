@@ -245,7 +245,7 @@ function Home() {
           {DIAMOND_SHAPES.map((shape) => (
             <Link
               key={shape}
-              to="/ring-builder"
+              to="/ring-builder/shape"
               search={{ shape }}
               className="group flex flex-col items-center gap-3"
             >
@@ -266,7 +266,7 @@ function Home() {
           ))}
         </div>
         <Button asChild className="mt-14 rounded-none px-10 py-6 tracking-[0.2em] uppercase">
-          <Link to="/ring-builder">Start the Ring Builder</Link>
+          <Link to="/ring-builder/shape">Start the Ring Builder</Link>
         </Button>
       </section>
 

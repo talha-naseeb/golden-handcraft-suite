@@ -37,7 +37,7 @@ export function BagLineInfo({
         </dl>
         {cfg && (
           <Link
-            to="/ring-builder"
+            to="/ring-builder/shape"
             search={{ d: encodeConfig(cfg) }}
             onClick={onNavigate}
             className="mt-2 inline-block text-[11px] tracking-[0.14em] text-primary uppercase underline-offset-4 hover:underline"
