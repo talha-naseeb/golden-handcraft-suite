@@ -30,3 +30,10 @@ Replacing the previous DANHOV build entirely. Mock/local data only (no backend y
 - [x] Aurelia Concierge assistant UI (rule-based over catalog data, no AI backend yet)
 - [x] Personalization rails (recently viewed, recommended, more from designer)
 - [x] /admin dashboard (products, appointments, content — mock)
+
+## DANHOV remaining phases (requested Sep 29)
+- [x] 3-step Ring Builder: landing (3 pathways), /setting, /diamond, /complete (size, engraving, 24h price lock), AI concept studio
+- [ ] /story, /philosophy, /sustainability, /blog
+- [ ] /gift-cards (+ balance checker), /partner, /affiliate
+- [ ] /faq, /shipping-and-return-policy, /warranty, /track-order
+- [ ] Booking modal: add date picker + appointment type
