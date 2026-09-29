@@ -14,10 +14,13 @@ import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as EngagementRingsRouteImport } from './routes/engagement-rings'
 import { Route as FineJewelryRouteImport } from './routes/fine-jewelry'
 import { Route as MensRouteImport } from './routes/mens'
+import { Route as RingBuilderRouteImport } from './routes/ring-builder'
 import { Route as WeddingBandsRouteImport } from './routes/wedding-bands'
 import { Route as WishlistRouteImport } from './routes/wishlist'
+import { Route as ApiConceptRenderRouteImport } from './routes/api/concept-render'
 import { Route as ApiRingPreviewRouteImport } from './routes/api/ring-preview'
 import { Route as ProductSlugRouteImport } from './routes/product.$slug'
+import { Route as RingBuilderIndexRouteImport } from './routes/ring-builder.index'
 import { Route as RingBuilderShapeRouteImport } from './routes/ring-builder.shape'
 
 const IndexRoute = IndexRouteImport.update({
@@ -45,6 +48,11 @@ const MensRoute = MensRouteImport.update({
   path: '/mens',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RingBuilderRoute = RingBuilderRouteImport.update({
+  id: '/ring-builder',
+  path: '/ring-builder',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const WeddingBandsRoute = WeddingBandsRouteImport.update({
   id: '/wedding-bands',
   path: '/wedding-bands',
@@ -53,6 +61,11 @@ const WeddingBandsRoute = WeddingBandsRouteImport.update({
 const WishlistRoute = WishlistRouteImport.update({
   id: '/wishlist',
   path: '/wishlist',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiConceptRenderRoute = ApiConceptRenderRouteImport.update({
+  id: '/api/concept-render',
+  path: '/api/concept-render',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiRingPreviewRoute = ApiRingPreviewRouteImport.update({
@@ -65,10 +78,15 @@ const ProductSlugRoute = ProductSlugRouteImport.update({
   path: '/product/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RingBuilderIndexRoute = RingBuilderIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => RingBuilderRoute,
+} as any)
 const RingBuilderShapeRoute = RingBuilderShapeRouteImport.update({
-  id: '/ring-builder/shape',
-  path: '/ring-builder/shape',
-  getParentRoute: () => rootRouteImport,
+  id: '/shape',
+  path: '/shape',
+  getParentRoute: () => RingBuilderRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -77,11 +95,14 @@ export interface FileRoutesByFullPath {
   '/engagement-rings': typeof EngagementRingsRoute
   '/fine-jewelry': typeof FineJewelryRoute
   '/mens': typeof MensRoute
+  '/ring-builder': typeof RingBuilderRouteWithChildren
   '/wedding-bands': typeof WeddingBandsRoute
   '/wishlist': typeof WishlistRoute
+  '/api/concept-render': typeof ApiConceptRenderRoute
   '/api/ring-preview': typeof ApiRingPreviewRoute
   '/product/$slug': typeof ProductSlugRoute
   '/ring-builder/shape': typeof RingBuilderShapeRoute
+  '/ring-builder/': typeof RingBuilderIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -91,9 +112,11 @@ export interface FileRoutesByTo {
   '/mens': typeof MensRoute
   '/wedding-bands': typeof WeddingBandsRoute
   '/wishlist': typeof WishlistRoute
+  '/api/concept-render': typeof ApiConceptRenderRoute
   '/api/ring-preview': typeof ApiRingPreviewRoute
   '/product/$slug': typeof ProductSlugRoute
   '/ring-builder/shape': typeof RingBuilderShapeRoute
+  '/ring-builder': typeof RingBuilderIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -102,11 +125,14 @@ export interface FileRoutesById {
   '/engagement-rings': typeof EngagementRingsRoute
   '/fine-jewelry': typeof FineJewelryRoute
   '/mens': typeof MensRoute
+  '/ring-builder': typeof RingBuilderRouteWithChildren
   '/wedding-bands': typeof WeddingBandsRoute
   '/wishlist': typeof WishlistRoute
+  '/api/concept-render': typeof ApiConceptRenderRoute
   '/api/ring-preview': typeof ApiRingPreviewRoute
   '/product/$slug': typeof ProductSlugRoute
   '/ring-builder/shape': typeof RingBuilderShapeRoute
+  '/ring-builder/': typeof RingBuilderIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -116,11 +142,14 @@ export interface FileRouteTypes {
     | '/engagement-rings'
     | '/fine-jewelry'
     | '/mens'
+    | '/ring-builder'
     | '/wedding-bands'
     | '/wishlist'
+    | '/api/concept-render'
     | '/api/ring-preview'
     | '/product/$slug'
     | '/ring-builder/shape'
+    | '/ring-builder/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -130,9 +159,11 @@ export interface FileRouteTypes {
     | '/mens'
     | '/wedding-bands'
     | '/wishlist'
+    | '/api/concept-render'
     | '/api/ring-preview'
     | '/product/$slug'
     | '/ring-builder/shape'
+    | '/ring-builder'
   id:
     | '__root__'
     | '/'
@@ -140,11 +171,14 @@ export interface FileRouteTypes {
     | '/engagement-rings'
     | '/fine-jewelry'
     | '/mens'
+    | '/ring-builder'
     | '/wedding-bands'
     | '/wishlist'
+    | '/api/concept-render'
     | '/api/ring-preview'
     | '/product/$slug'
     | '/ring-builder/shape'
+    | '/ring-builder/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -153,11 +187,12 @@ export interface RootRouteChildren {
   EngagementRingsRoute: typeof EngagementRingsRoute
   FineJewelryRoute: typeof FineJewelryRoute
   MensRoute: typeof MensRoute
+  RingBuilderRoute: typeof RingBuilderRouteWithChildren
   WeddingBandsRoute: typeof WeddingBandsRoute
   WishlistRoute: typeof WishlistRoute
+  ApiConceptRenderRoute: typeof ApiConceptRenderRoute
   ApiRingPreviewRoute: typeof ApiRingPreviewRoute
   ProductSlugRoute: typeof ProductSlugRoute
-  RingBuilderShapeRoute: typeof RingBuilderShapeRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -197,6 +232,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MensRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ring-builder': {
+      id: '/ring-builder'
+      path: '/ring-builder'
+      fullPath: '/ring-builder'
+      preLoaderRoute: typeof RingBuilderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/wedding-bands': {
       id: '/wedding-bands'
       path: '/wedding-bands'
@@ -209,6 +251,13 @@ declare module '@tanstack/react-router' {
       path: '/wishlist'
       fullPath: '/wishlist'
       preLoaderRoute: typeof WishlistRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/concept-render': {
+      id: '/api/concept-render'
+      path: '/api/concept-render'
+      fullPath: '/api/concept-render'
+      preLoaderRoute: typeof ApiConceptRenderRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/ring-preview': {
@@ -225,15 +274,36 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ring-builder/': {
+      id: '/ring-builder/'
+      path: '/'
+      fullPath: '/ring-builder/'
+      preLoaderRoute: typeof RingBuilderIndexRouteImport
+      parentRoute: typeof RingBuilderRoute
+    }
     '/ring-builder/shape': {
       id: '/ring-builder/shape'
-      path: '/ring-builder/shape'
+      path: '/shape'
       fullPath: '/ring-builder/shape'
       preLoaderRoute: typeof RingBuilderShapeRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof RingBuilderRoute
     }
   }
 }
+
+interface RingBuilderRouteChildren {
+  RingBuilderShapeRoute: typeof RingBuilderShapeRoute
+  RingBuilderIndexRoute: typeof RingBuilderIndexRoute
+}
+
+const RingBuilderRouteChildren: RingBuilderRouteChildren = {
+  RingBuilderShapeRoute: RingBuilderShapeRoute,
+  RingBuilderIndexRoute: RingBuilderIndexRoute,
+}
+
+const RingBuilderRouteWithChildren = RingBuilderRoute._addFileChildren(
+  RingBuilderRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -241,11 +311,12 @@ const rootRouteChildren: RootRouteChildren = {
   EngagementRingsRoute: EngagementRingsRoute,
   FineJewelryRoute: FineJewelryRoute,
   MensRoute: MensRoute,
+  RingBuilderRoute: RingBuilderRouteWithChildren,
   WeddingBandsRoute: WeddingBandsRoute,
   WishlistRoute: WishlistRoute,
+  ApiConceptRenderRoute: ApiConceptRenderRoute,
   ApiRingPreviewRoute: ApiRingPreviewRoute,
   ProductSlugRoute: ProductSlugRoute,
-  RingBuilderShapeRoute: RingBuilderShapeRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

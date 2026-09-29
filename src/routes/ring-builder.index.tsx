@@ -7,6 +7,7 @@ import { useBuilder, type BuilderMode } from "@/lib/builder-store";
 import { streamImage } from "@/lib/stream-image";
 import { D_SHAPES } from "@/lib/diamonds";
 import { cn } from "@/lib/utils";
+import { Chip } from "@/components/site/Chip";
 import heroImg from "@/assets/hero-ring.jpg";
 
 export const Route = createFileRoute("/ring-builder/")({
@@ -176,18 +177,3 @@ function AiStudio() {
   );
 }
 
-export function Chip({ active, onClick, children }: { active: boolean; onClick: () => void; children: React.ReactNode }) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      aria-pressed={active}
-      className={cn(
-        "border px-3 py-2 text-[11px] tracking-[0.12em] uppercase transition-colors",
-        active ? "border-primary bg-primary text-primary-foreground" : "border-border hover:border-primary",
-      )}
-    >
-      {children}
-    </button>
-  );
-}
