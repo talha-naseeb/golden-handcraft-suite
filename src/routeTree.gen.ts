@@ -14,11 +14,11 @@ import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as EngagementRingsRouteImport } from './routes/engagement-rings'
 import { Route as FineJewelryRouteImport } from './routes/fine-jewelry'
 import { Route as MensRouteImport } from './routes/mens'
-import { Route as RingBuilderRouteImport } from './routes/ring-builder'
 import { Route as WeddingBandsRouteImport } from './routes/wedding-bands'
 import { Route as WishlistRouteImport } from './routes/wishlist'
 import { Route as ApiRingPreviewRouteImport } from './routes/api/ring-preview'
 import { Route as ProductSlugRouteImport } from './routes/product.$slug'
+import { Route as RingBuilderShapeRouteImport } from './routes/ring-builder.shape'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -45,11 +45,6 @@ const MensRoute = MensRouteImport.update({
   path: '/mens',
   getParentRoute: () => rootRouteImport,
 } as any)
-const RingBuilderRoute = RingBuilderRouteImport.update({
-  id: '/ring-builder',
-  path: '/ring-builder',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const WeddingBandsRoute = WeddingBandsRouteImport.update({
   id: '/wedding-bands',
   path: '/wedding-bands',
@@ -70,6 +65,11 @@ const ProductSlugRoute = ProductSlugRouteImport.update({
   path: '/product/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RingBuilderShapeRoute = RingBuilderShapeRouteImport.update({
+  id: '/ring-builder/shape',
+  path: '/ring-builder/shape',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -77,11 +77,11 @@ export interface FileRoutesByFullPath {
   '/engagement-rings': typeof EngagementRingsRoute
   '/fine-jewelry': typeof FineJewelryRoute
   '/mens': typeof MensRoute
-  '/ring-builder': typeof RingBuilderRoute
   '/wedding-bands': typeof WeddingBandsRoute
   '/wishlist': typeof WishlistRoute
   '/api/ring-preview': typeof ApiRingPreviewRoute
   '/product/$slug': typeof ProductSlugRoute
+  '/ring-builder/shape': typeof RingBuilderShapeRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -89,11 +89,11 @@ export interface FileRoutesByTo {
   '/engagement-rings': typeof EngagementRingsRoute
   '/fine-jewelry': typeof FineJewelryRoute
   '/mens': typeof MensRoute
-  '/ring-builder': typeof RingBuilderRoute
   '/wedding-bands': typeof WeddingBandsRoute
   '/wishlist': typeof WishlistRoute
   '/api/ring-preview': typeof ApiRingPreviewRoute
   '/product/$slug': typeof ProductSlugRoute
+  '/ring-builder/shape': typeof RingBuilderShapeRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -102,11 +102,11 @@ export interface FileRoutesById {
   '/engagement-rings': typeof EngagementRingsRoute
   '/fine-jewelry': typeof FineJewelryRoute
   '/mens': typeof MensRoute
-  '/ring-builder': typeof RingBuilderRoute
   '/wedding-bands': typeof WeddingBandsRoute
   '/wishlist': typeof WishlistRoute
   '/api/ring-preview': typeof ApiRingPreviewRoute
   '/product/$slug': typeof ProductSlugRoute
+  '/ring-builder/shape': typeof RingBuilderShapeRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -116,11 +116,11 @@ export interface FileRouteTypes {
     | '/engagement-rings'
     | '/fine-jewelry'
     | '/mens'
-    | '/ring-builder'
     | '/wedding-bands'
     | '/wishlist'
     | '/api/ring-preview'
     | '/product/$slug'
+    | '/ring-builder/shape'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -128,11 +128,11 @@ export interface FileRouteTypes {
     | '/engagement-rings'
     | '/fine-jewelry'
     | '/mens'
-    | '/ring-builder'
     | '/wedding-bands'
     | '/wishlist'
     | '/api/ring-preview'
     | '/product/$slug'
+    | '/ring-builder/shape'
   id:
     | '__root__'
     | '/'
@@ -140,11 +140,11 @@ export interface FileRouteTypes {
     | '/engagement-rings'
     | '/fine-jewelry'
     | '/mens'
-    | '/ring-builder'
     | '/wedding-bands'
     | '/wishlist'
     | '/api/ring-preview'
     | '/product/$slug'
+    | '/ring-builder/shape'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -153,11 +153,11 @@ export interface RootRouteChildren {
   EngagementRingsRoute: typeof EngagementRingsRoute
   FineJewelryRoute: typeof FineJewelryRoute
   MensRoute: typeof MensRoute
-  RingBuilderRoute: typeof RingBuilderRoute
   WeddingBandsRoute: typeof WeddingBandsRoute
   WishlistRoute: typeof WishlistRoute
   ApiRingPreviewRoute: typeof ApiRingPreviewRoute
   ProductSlugRoute: typeof ProductSlugRoute
+  RingBuilderShapeRoute: typeof RingBuilderShapeRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -197,13 +197,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MensRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/ring-builder': {
-      id: '/ring-builder'
-      path: '/ring-builder'
-      fullPath: '/ring-builder'
-      preLoaderRoute: typeof RingBuilderRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/wedding-bands': {
       id: '/wedding-bands'
       path: '/wedding-bands'
@@ -232,6 +225,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ring-builder/shape': {
+      id: '/ring-builder/shape'
+      path: '/ring-builder/shape'
+      fullPath: '/ring-builder/shape'
+      preLoaderRoute: typeof RingBuilderShapeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -241,11 +241,11 @@ const rootRouteChildren: RootRouteChildren = {
   EngagementRingsRoute: EngagementRingsRoute,
   FineJewelryRoute: FineJewelryRoute,
   MensRoute: MensRoute,
-  RingBuilderRoute: RingBuilderRoute,
   WeddingBandsRoute: WeddingBandsRoute,
   WishlistRoute: WishlistRoute,
   ApiRingPreviewRoute: ApiRingPreviewRoute,
   ProductSlugRoute: ProductSlugRoute,
+  RingBuilderShapeRoute: RingBuilderShapeRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
